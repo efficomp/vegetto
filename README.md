@@ -15,4 +15,4 @@ that chooses the most optimal version depending on the number of selected featur
 
 ## Documentation
 
-Vegetto is fully documented in its [github-pages](https://efficomp.github.io/culebra/). You can also generate its docs from the source code. Simply change directory to the `doc` subfolder and type in `make html`, the documentation will be under `build/html`. You will need [Sphinx](https://www.sphinx-doc.org/en/master/) to build the documentation.
+Vegetto is fully documented in its [github-pages](https://efficomp.github.io/vegetto/). You can also generate its docs from the source code. Simply change directory to the `doc` subfolder and type in `make html`, the documentation will be under `build/html`. You will need [Sphinx](https://www.sphinx-doc.org/en/master/) to build the documentation.
