@@ -1,0 +1,50 @@
+..
+   This file is part of Vegetto.
+
+   Vegetto is free software: you can redistribute it and/or modify it under the
+   terms of the GNU General Public License as published by the Free Software
+   Foundation, either version 3 of the License, or (at your option) any later
+   version.
+
+   Vegetto is distributed in the hope that it will be useful, but WITHOUT ANY
+   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+   A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with
+   Vegetto. If not, see <http://www.gnu.org/licenses/>.
+
+   This work was supported by project PGC2018-098813-B-C31 (Spanish "Ministerio
+   de Ciencia, Innovación y Universidades"), and by the European Regional
+   Development Fund (ERDF).
+
+Welcome to Vegetto's documentation!
+===================================
+
+Vegetto i a `DEAP <https://deap.readthedocs.io/en/master/>`_-based evolutionary procedure
+designed to solve multi-objective optimization feature selection problems.
+
+Specifically, a wrapper has been designed where NSGA-II is used as search strategy,
+while *k*-NN is used as classification algorithm for the evaluation of potential solutions.
+
+This wrapper is designed with two premises in mind: to reach solutions as close as
+possible to the global optimum and to perform the computation in an efficient way. For
+the latter, four efficient versions of *k*-NN have been developed in C++, where the
+data conversion between both languages is carried out with the `Pybind11 <https://pybind11.readthedocs.io/en/stable/>`_ library. If maximum
+efficiency is desired, the last version of *k*-NN should be chosen, since this is a mechanism
+that chooses the most optimal version depending on the number of selected features.
+
+
+Contents:
+=========
+.. toctree::
+   :titlesonly:
+
+   Config module <config>
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
