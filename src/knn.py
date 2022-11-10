@@ -54,13 +54,13 @@ class Knn():
         :param number_of_features: Number of features to select from file
         """
 
-        self.data_train = np.load(r"db/UCI/Robust/{}/data_train.npy".format(config.folder_dataset),
+        self.data_train = np.load(r"db/{}/data_train.npy".format(config.folder_dataset),
                                   allow_pickle=True)
-        self.labels_train = np.load("db/UCI/Robust/{}/labels_train.npy".format(config.folder_dataset),
+        self.labels_train = np.load("db/{}/labels_train.npy".format(config.folder_dataset),
                                     allow_pickle=True).astype('int')
-        self.data_test = np.load("db/UCI/Robust/{}/data_test.npy".format(config.folder_dataset),
+        self.data_test = np.load("db/{}/data_test.npy".format(config.folder_dataset),
                                  allow_pickle=True)
-        self.labels_test = np.load("db/UCI/Robust/{}/labels_test.npy".format(config.folder_dataset),
+        self.labels_test = np.load("db/{}/labels_test.npy".format(config.folder_dataset),
                                    allow_pickle=True).astype('int')
 
         le = preprocessing.LabelEncoder()

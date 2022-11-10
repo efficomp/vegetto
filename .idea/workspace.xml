@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0d9c69a6-b22b-4356-a3c1-86f5e8b37da6" name="Changes" comment="Work in progress">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/German/Robust_yes_outliers/data_test.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/German/data_test.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/German/Robust_yes_outliers/data_train.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/German/data_train.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/German/Robust_yes_outliers/labels_test.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/German/labels_test.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/German/Robust_yes_outliers/labels_train.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/German/labels_train.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/German/data_test.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/German/data_train.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/German/labels_test.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/German/labels_train.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Ionosphere/Robust_yes_outliers/data_test.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Ionosphere/data_test.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Ionosphere/Robust_yes_outliers/data_train.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Ionosphere/data_train.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Ionosphere/Robust_yes_outliers/labels_test.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Ionosphere/labels_test.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Ionosphere/Robust_yes_outliers/labels_train.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Ionosphere/labels_train.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Ionosphere/data_test.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Ionosphere/data_train.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Ionosphere/labels_test.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Ionosphere/labels_train.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Musk1/Robust_yes_outliers/data_test.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Musk1/data_test.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Musk1/Robust_yes_outliers/data_train.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Musk1/data_train.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Musk1/Robust_yes_outliers/labels_test.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Musk1/labels_test.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Musk1/Robust_yes_outliers/labels_train.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Musk1/labels_train.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Musk1/data_test.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Musk1/data_train.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Musk1/labels_test.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Musk1/labels_train.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/WBCD/Robust_yes_outliers/data_test.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/WBCD/data_test.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/WBCD/Robust_yes_outliers/data_train.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/WBCD/data_train.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/WBCD/Robust_yes_outliers/labels_test.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/WBCD/labels_test.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/WBCD/Robust_yes_outliers/labels_train.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/WBCD/labels_train.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/WBCD/data_test.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/WBCD/data_train.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/WBCD/labels_test.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/WBCD/labels_train.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Wine/Robust_yes_outliers/data_test.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Wine/data_test.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Wine/Robust_yes_outliers/data_train.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Wine/data_train.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Wine/Robust_yes_outliers/labels_test.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Wine/labels_test.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Wine/Robust_yes_outliers/labels_train.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Wine/labels_train.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Wine/data_test.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Wine/data_train.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Wine/labels_test.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Wine/labels_train.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Zoo/Robust_yes_outliers/data_test.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Zoo/data_test.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Zoo/Robust_yes_outliers/data_train.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Zoo/data_train.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Zoo/Robust_yes_outliers/labels_test.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Zoo/labels_test.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Zoo/Robust_yes_outliers/labels_train.npy" beforeDir="false" afterPath="$PROJECT_DIR$/db/Zoo/labels_train.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Zoo/data_test.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Zoo/data_train.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Zoo/labels_test.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/UCI/Robust/Zoo/labels_train.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/knn.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/knn.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2HE88rA6ctJ9UyLBUq5CU714EEU" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/home/goloj/vegetto/main_script.sh"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/db/Zoo" />
+      <recent name="$PROJECT_DIR$/db/Wine" />
+      <recent name="$PROJECT_DIR$/db/WBCD" />
+      <recent name="$PROJECT_DIR$/db/Musk1" />
+      <recent name="$PROJECT_DIR$/db/Ionosphere" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="script" type="ShConfigurationType">
+      <option name="SCRIPT_TEXT" value="" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/main_script.sh" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="/bin/bash" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="true" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0d9c69a6-b22b-4356-a3c1-86f5e8b37da6" name="Changes" comment="" />
+      <created>1667838725420</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1667838725420</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Work in progress">
+      <created>1667839306568</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1667839306568</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Work in progress">
+      <created>1667840323429</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1667840323429</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Work in progress">
+      <created>1667840710424</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1667840710424</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Work in progress">
+      <created>1667842652106</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1667842652106</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Work in progress">
+      <created>1667842719874</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1667842719874</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Work in progress">
+      <created>1667843526016</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1667843526016</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Work in progress" />
+    <option name="LAST_COMMIT_MESSAGE" value="Work in progress" />
+  </component>
+</project>
