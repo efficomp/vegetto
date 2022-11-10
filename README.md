@@ -56,6 +56,14 @@ the square root of the number of training samples.
 * `DecisionFeatures` - Threshold of number of selected features to choose between KNN_O2 and KNN_O3.
 * `ProjectPath` - Project path where vegetto is located.
 
+Finally, to use either *k*-NN versions, it is necessary to compile the C++ code, which is located in the `KNN_C` folder.
+The command to be executed is:
+
+`g++ -O2 -Wall -funroll-loops -march=native -fopenmp -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -shared -std=c++17 -fPIC $(python3 -m pybind11 --includes) library.hpp library.cpp -o knn_library$(python3-config --extension-suffix)
+`
+
+This command will create a `.so` object that has to be located in the `src` folder.
+
 ## Acknowledgments
 
 This work was supported by project *New Computing Paradigms and Heterogeneous Parallel Architectures for High-Performance and Energy Efficiency of Classification and Optimization Tasks on Biomedical Engineering Applications* ([HPEE-COBE](https://atcproyectos.ugr.es/efficomp/research/projects/hpee-cobe/)), with reference PGC2018-098813-B-C31, funded by the Spanish [*Ministerio de Ciencia, Innovación y Universidades*](https://www.ciencia.gob.es/), and by the [European Regional Development Fund (ERDF)](https://ec.europa.eu/regional_policy/en/funding/erdf/).
