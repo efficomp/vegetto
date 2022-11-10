@@ -21,18 +21,16 @@
 	<SubPopulations>2</SubPopulations>
 	<Migrations>0</Migrations>
 	<EvaluationVersion>5</EvaluationVersion>
-	<Processes>2</Processes>
 	<FitnessEvolution>0</FitnessEvolution>
 	<PercentageFS>0.05</PercentageFS>
 	<AccuracyConvergence>0.05</AccuracyConvergence>
-	<SDConvergence>-1</SDConvergence>
+	<SDConvergence>0.0001</SDConvergence>
 	<K>-1</K>
-	<Paper>testJCR</Paper>
-	<Node>hpm4</Node>
-	<pc>0.8</pc>
-	<pm>0.00028</pm>
-	<pmr>0.2</pmr>
-	<GenerationsMigration>10</GenerationsMigration>
+	<ExperimentName>testJCR</ExperimentName>
+	<CrossoverProbability>0.8</CrossoverProbability>
+	<MutationProbability>0.00028</MutationProbability>
+	<Grain>0.2</Grain>
+	<Period>10</Period>
 	<DecisionFeatures>19</DecisionFeatures>
-	<ProjectPath>/home/vegetto</ProjectPath>
+	<ProjectPath>/home/goloj/vegetto</ProjectPath>
 </Config>

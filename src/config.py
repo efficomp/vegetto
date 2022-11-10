@@ -46,20 +46,18 @@ class Config:
         self.sub_populations = int(root[6].text)
         self.migrations = int(root[7].text)
         self.evaluation_version = int(root[8].text)
-        self.processes = int(root[9].text)
-        self.fitness_evolution = int(root[10].text)
-        self.percentage_fs = float(root[11].text)
-        self.accuracy_convergence = float(root[12].text)
-        self.sd_convergence = float(root[13].text)
-        self.k = int(root[14].text)
-        self.paper = root[15].text
-        self.node = root[16].text
-        self.pc = float(root[17].text)
-        self.pm = float(root[18].text)
-        self.pmr = float(root[19].text)
-        self.generations_migration = int(root[20].text)
-        self.decision_features = float(root[21].text)
-        self.project_path = root[22].text
+        self.fitness_evolution = int(root[9].text)
+        self.percentage_fs = float(root[10].text)
+        self.accuracy_convergence = float(root[11].text)
+        self.sd_convergence = float(root[12].text)
+        self.k = int(root[13].text)
+        self.experiment_name = root[14].text
+        self.pc = float(root[15].text)
+        self.pm = float(root[16].text)
+        self.grain = float(root[17].text)
+        self.period = int(root[18].text)
+        self.decision_features = float(root[19].text)
+        self.project_path = root[20].text
 
         if self.sub_populations < 0:
             print("Error: The number of sub-populations are not correct (the minimum has to be 1)")

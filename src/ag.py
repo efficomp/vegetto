@@ -246,11 +246,11 @@ def genetic_algorithm(knn: Knn, config: Config, pop, sub_pop, q_in, q_out, q, da
         gen += 1
 
         # ------------------------------------------------- MIGRATION -------------------------------------------------
-        if config.sub_populations > 1 and gen % config.generations_migration == 0:
+        if config.sub_populations > 1 and gen % config.period == 0:
             pareto_front = tools.sortNondominated(pop[sub_pop], config.individuals, first_front_only=True)[0]
             migration_probability = np.random.rand(1, len(pareto_front))
             individuals_to_migrate = []
-            for i in np.where(migration_probability < config.pmr)[1]:
+            for i in np.where(migration_probability < config.grain)[1]:
                 individuals_to_migrate.append(pareto_front[i])
             if len(individuals_to_migrate) == 0:
                 individuals_to_migrate.append(pareto_front[random.randint(0, len(pareto_front) - 1)])
@@ -340,7 +340,7 @@ def features_selection(config: Config, knn: Knn):
     q = mp.Queue()
     data_queue = mp.Queue()
 
-    for i in range(config.processes):
+    for i in range(config.sub_populations):
         id_out = (config.sub_populations - 1) if i == 0 else i - 1
         processes.append(
             mp.Process(target=genetic_algorithm, args=(knn, config, pop, i, queues[i], queues[id_out], q, data_queue)))
@@ -348,7 +348,7 @@ def features_selection(config: Config, knn: Knn):
     for p in processes:
         p.start()
 
-    for i in range(config.processes):
+    for i in range(config.sub_populations):
         final_pop += q.get()
         gen_and_eval.append(data_queue.get())
 
@@ -360,9 +360,9 @@ def features_selection(config: Config, knn: Knn):
                    'individuals': config.individuals,
                    'percentage_fs': config.percentage_fs, 'maximum_generations': config.max_generations,
                    'subpopulations': config.sub_populations, 'migrations': config.migrations,
-                   'period': config.generations_migration, 'grain': config.pmr,
+                   'period': config.period, 'grain': config.grain,
                    'evaluation_version': config.evaluation_version, 'accuracy_convergence': config.accuracy_convergence,
-                   'sd_convergence': config.sd_convergence, 'k': config.k, 'paper': config.paper}
+                   'sd_convergence': config.sd_convergence, 'k': config.k, 'paper': config.experiment_name}
 
     print("************ PARETO FRONT ************")
     best_individuals = []

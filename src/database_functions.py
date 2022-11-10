@@ -50,7 +50,7 @@ def save_experiment(data_backup):
                                'grain': data_backup['grain'], 'period': data_backup['period'],
                                'accuracy_convergence': data_backup['accuracy_convergence'],
                                'sd_convergence': data_backup['sd_convergence'],
-                               'k': data_backup['k'], 'paper': data_backup['paper']})
+                               'k': data_backup['k'], 'experiment_name': data_backup['experiment_name']})
     pareto_front = []
     for i in range(len(data_backup['experiment']['pareto_front'])):
         pareto_front.append({'test_accuracy': data_backup['experiment']['pareto_front'][i].test_accuaracy,
@@ -71,7 +71,8 @@ def save_experiment(data_backup):
              'evaluation_version': data_backup['evaluation_version'],
              'grain': data_backup['grain'], 'period': data_backup['period'],
              'accuracy_convergence': data_backup['accuracy_convergence'],
-             'sd_convergence': data_backup['sd_convergence'], 'k': data_backup['k'], 'paper': data_backup['paper']},
+             'sd_convergence': data_backup['sd_convergence'], 'k': data_backup['k'],
+             'experiment_name': data_backup['experiment_name']},
             {'$set': {'experiment': experiment_aux}})
 
     else:
@@ -84,6 +85,6 @@ def save_experiment(data_backup):
              'evaluation_version': data_backup['evaluation_version'],
              'grain': data_backup['grain'], 'period': data_backup['period'],
              'accuracy_convergence': data_backup['accuracy_convergence'],
-             'sd_convergence': data_backup['sd_convergence'], 'k': data_backup['k'], 'paper': data_backup['paper'],
+             'sd_convergence': data_backup['sd_convergence'], 'k': data_backup['k'],
+             'experiment_name': data_backup['experiment_name'],
              'experiment': [data_backup['experiment']]})
-
