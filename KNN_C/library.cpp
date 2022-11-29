@@ -1,3 +1,23 @@
+/**
+* This file is part of Vegetto.
+
+* Vegetto is free software: you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation, either version 3 of the License, or (at your option) any later
+* version.
+
+* Vegetto is distributed in the hope that it will be useful, but WITHOUT ANY
+* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+* A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+* You should have received a copy of the GNU General Public License along with
+* Vegetto. If not, see <http://www.gnu.org/licenses/>.
+
+* This work was supported by project PGC2018-098813-B-C31 (Spanish "Ministerio
+* de Ciencia, Innovación y Universidades"), and by the European Regional
+* Development Fund (ERDF).
+*/
+
 #include "library.hpp"
 
 Dataset load_dataset(string filename, int classes){
@@ -296,13 +316,10 @@ std::vector<std::vector<int>> Population::evaluate(Configuration config){
         }
 	}
 	else if (config.evaluation_version == 3){
-//	    start = omp_get_wtime();
 	    for(int ind = 0; ind < individuals.size(); ++ind){
             split_train_test(dataset, data_training, data_test);
             std::vector<int> original_labels(data_test.number_of_samples);
             std::vector<int> predict_labels(data_test.number_of_samples);
-
-
             for (int sam = 0; sam < data_test.number_of_samples; ++sam){
                 int val = classify_point_from_optimized_knn(data_training, int(round(sqrt(data_training.number_of_samples))), data_test.samples[sam], individuals[ind].chromosome, config);
                 original_labels[sam] = data_test.samples[sam].val;
@@ -329,10 +346,10 @@ std::vector<std::vector<int>> Population::evaluate(Configuration config){
                 original_labels[sam] = data_test.samples[sam].val;
                 predict_labels[sam] = val;
             }
-            accumulated_time.push_back(end-start);
 
             ind_labels.push_back(predict_labels);
             ind_labels.push_back(original_labels);
+
             delete[] data_training.samples;
             delete[] data_test.samples;
             delete[] vector_training;
@@ -365,10 +382,12 @@ std::vector<std::vector<int>> Population::evaluate(Configuration config){
                     predict_labels[sam] = val;
                 }
             }
+
             delete[] data_training.samples;
             delete[] data_test.samples;
             ind_labels.push_back(predict_labels);
             ind_labels.push_back(original_labels);
+        }
 	}
 
 	for (int i = 0; i < dataset.number_of_samples; ++i)

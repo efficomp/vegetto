@@ -1,40 +1,32 @@
-"""
-    @file database_functions.py
+# This file is part of Vegetto.
 
-    @brief This file contains all the necessary functions to manage the database.
+# Vegetto is free software: you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
 
-    @details All the data related to the evolutionary procedure (times, hypervolume, generations, among others) are
-    saved and updated on the database in order to generate the plots.
+# Vegetto is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-    All the information about the different methods is explained in each function.
+# You should have received a copy of the GNU General Public License along with
+# Vegetto. If not, see <http://www.gnu.org/licenses/>.
 
-    This work has been funded by the Spanish Ministry of Science, Innovation, and Universities under grant
-    PGC2018-098813-B-C31 and ERDF funds
-
-    The Python version used is 3.6.
-
-    This software make use of external libraries such as:
-
-        -Pymongo: created by Mike Dirolf (Copyright, 2008-present) and released under Apache license. The Github Pymongo
-        repository can be found in: https://github.com/mher/pymongo.
-
-    @author Juan Carlos Gómez López
-
-    @date 30/04/2020
-
-    @version 1.0
-
-    @copyright Licensed under GNU GPL-3.0-or-later
-
-    «Copyright 2020 EffiComp@ugr.es»
-"""
-import sys
+# This work was supported by project PGC2018-098813-B-C31 (Spanish "Ministerio
+# de Ciencia, Innovación y Universidades"), and by the European Regional
+# Development Fund (ERDF).
 
 from pymongo import MongoClient
 
 
 def save_experiment(data_backup):
-    # Initialize database client
+    """
+    Here, a wrapper experiment is stored in the database
+
+    :param data_backup: Dictionary with all the data
+    :type dict: :py:class:`dict`
+
+    """
     client = MongoClient()
     db = client.Vegetto
 

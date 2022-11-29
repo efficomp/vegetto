@@ -1,23 +1,25 @@
 #!/bin/bash
 
 <<COMMENT
-    @file main_script.sh
+  This file is part of Vegetto.
 
-    @brief File to manage the different executions of the evolutionary procedure
+  Vegetto is free software: you can redistribute it and/or modify it under the
+  terms of the GNU General Public License as published by the Free Software
+  Foundation, either version 3 of the License, or (at your option) any later
+  version.
 
-    This work has been funded by the Spanish Ministry of Science, Innovation, and Universities under grant
-    PGC2018-098813-B-C31 and ERDF funds
+  Vegetto is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+  A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-    @author Juan Carlos Gómez López
+  You should have received a copy of the GNU General Public License along with
+  Vegetto. If not, see <http://www.gnu.org/licenses/>.
 
-    @date 30/04/2020
-
-    @copyright Licensed under GNU GPL-3.0-or-later
-
-    «Copyright 2020 EffiComp@ugr.es»
+  This work was supported by project PGC2018-098813-B-C31 (Spanish "Ministerio
+  de Ciencia, Innovación y Universidades"), and by the European Regional
+  Development Fund (ERDF).
 COMMENT
 
-# GA Parameters
 Executions=$(grep -oP "(?<=<Executions>).*(?=</Executions)" config.xml)
 ProjectPath=$(grep -oP "(?<=<ProjectPath>).*(?=</ProjectPath)" config.xml)
 
@@ -27,8 +29,8 @@ if [ "$Executions" -lt 1 ]; then
   echo 'Number of executions have to be bigger than 0'
   exit
 fi
-#export OMP_NUM_THREADS=1
-# Run execution
+
+# Execute the wrapper
 for e in $(seq 1 "$Executions"); do
   if python3 "$ProjectPath"/src/main.py "$e"; then
     echo 'Genetic algorithm executed successfully'

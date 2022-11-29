@@ -20,7 +20,7 @@
 Welcome to Vegetto's documentation!
 ===================================
 
-Vegetto i a `DEAP <https://deap.readthedocs.io/en/master/>`_-based evolutionary procedure
+Vegetto is a `DEAP <https://deap.readthedocs.io/en/master/>`_-based evolutionary procedure
 designed to solve multi-objective optimization feature selection problems.
 
 Specifically, a wrapper has been designed where NSGA-II is used as search strategy,
@@ -39,7 +39,11 @@ Contents:
 .. toctree::
    :titlesonly:
 
-   Config module <config>
+    Config module <config>
+    Main module <main>
+    KNN module <knn>
+    Database module <database_functions>
+    Wrapper module <wrapper>
 
 
 Indices and tables

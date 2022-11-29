@@ -1,40 +1,20 @@
-"""
-    @file knn.py
+# This file is part of Vegetto.
 
-    @brief This file contains all the functions related to the kmeans algorithm.
+# Vegetto is free software: you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
 
-    @details The fitness of an individual is calculated through the BCSS and WCSS values. This files provides the
-    functions to calculate them.
+# Vegetto is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-    All the information about the different methods is explained in each function.
+# You should have received a copy of the GNU General Public License along with
+# Vegetto. If not, see <http://www.gnu.org/licenses/>.
 
-    This work has been funded by the Spanish Ministry of Science, Innovation, and Universities under grant
-    PGC2018-098813-B-C31 and ERDF funds
-
-    The Python version used is 3.6.
-
-    This software make use of external libraries such as:
-
-        -Sklearn: created by David Cournapeau (Copyright, 2007-2020) and released under BSD 3-Clause License.The Github
-        Sklearn repository can be found in: https://github.com/scikit-learn/scikit-learn.
-
-        -Pandas: created by Wes McKinney as Benevolent Dictator for Life and the Pandas's Team (Copyright 2008-2011,
-        AQR Capital Management and 2011-2020, Open source contributors) and released under BSD 3-Clause License. The
-        Github Pandas repository can be found in: https://github.com/pandas-dev/pandas.
-
-        -Numpy: created by Travis Oliphant (Copyright, 2005-2020) and released under BSD 3-Clause License. The Github
-        Numpy repository can be found in: https://github.com/numpy/numpy.
-
-    @author Juan Carlos Gómez López
-
-    @date 30/04/2020
-
-    @version 1.0
-
-    @copyright Licensed under GNU GPL-3.0-or-later
-
-    «Copyright 2020 EffiComp@ugr.es»
-"""
+# This work was supported by project PGC2018-098813-B-C31 (Spanish "Ministerio
+# de Ciencia, Innovación y Universidades"), and by the European Regional
+# Development Fund (ERDF).
 
 import math
 import numpy as np
@@ -43,15 +23,25 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, cohen_kappa_score
 from sklearn import preprocessing
 
-from src.config import Config
+from config import Config
+
+__author__ = 'Juan Carlos Gómez-López'
+__copyright__ = 'Copyright 2022, EFFICOMP'
+__license__ = 'GNU GPL-3.0-or-later'
+__version__ = '0.1.0'
+__maintainer__ = 'Juan Carlos Gómez-López'
+__email__ = 'goloj@ugr.es'
+__status__ = 'Development'
 
 
 class Knn():
     def __init__(self, config: Config):
         """
-        Class Constructor
-        :param filename: EEG file name
-        :param number_of_features: Number of features to select from file
+        Constructor.
+
+        :param config: Config object where all the hyperparameter values are loaded
+        :type Config: :py:mod:`config`
+
         """
 
         self.data_train = np.load(r"db/{}/data_train.npy".format(config.folder_dataset),
@@ -75,13 +65,13 @@ class Knn():
         self.accuracy_validation = 0.0
         self.number_of_selected_features = 0.0
 
-    def calculate_accuracy_validation(self, individual):
+    def calculate_kappa_coefficiente_validation(self, individual):
         """
-        Function to calculate the centroids and the WCSS of an individual
+        Calculation of the validation Kappa coefficient.
 
-        :param individual: Individual of the population
+        :param individual: Chromosome of the individual (selected features)
+        :type Individual: Individual
 
-        :param max_iter_kmeans: maximum number of iterations performed by the  Kmeans
         """
 
         data_to_knn = self.data_train[:, individual]
@@ -100,6 +90,13 @@ class Knn():
         self.number_of_selected_features = len(individual)
 
     def calculate_accuracy_test(self, individual):
+        """
+        Calculation of the test accuracy.
+
+        :param individual: Chromosome of the individual (selected features)
+        :type Individual: Individual
+
+        """
         data_to_knn_train = self.data_train[:, individual]
         data_to_knn_test = self.data_test[:, individual]
 

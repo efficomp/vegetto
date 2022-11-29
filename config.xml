@@ -1,36 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<!-- @file config.xml -->
-<!-- @brief File with the program configurations -->
-<!-- This work has been funded by the Spanish Ministry of Science, Innovation, and Universities under grant
-     PGC2018-098813-B-C31 and ERDF funds -->
-<!-- @version 1.0 -->
-<!-- @author Juan Carlos Gómez López -->
-<!-- @date 30/04/2020 -->
-<!-- @version 1.0 -->
-<!-- @copyright Licensed under GNU GPL-3.0-or-later -->
-<!-- «Copyright 2020 EffiComp@ugr.es» -->
+<!-- This file is part of Vegetto. -->
+
+<!-- Vegetto is free software: you can redistribute it and/or modify it under the -->
+<!-- terms of the GNU General Public License as published by the Free Software -->
+<!-- Foundation, either version 3 of the License, or (at your option) any later -->
+<!-- version. -->
+
+<!-- Vegetto is distributed in the hope that it will be useful, but WITHOUT ANY -->
+<!-- WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR -->
+<!-- A PARTICULAR PURPOSE. See the GNU General Public License for more details. -->
+
+<!-- You should have received a copy of the GNU General Public License along with -->
+<!-- Vegetto. If not, see <http://www.gnu.org/licenses/>. -->
+
+<!-- This work was supported by project PGC2018-098813-B-C31 (Spanish "Ministerio -->
+<!-- de Ciencia, Innovación y Universidades"), and by the European Regional -->
+<!-- Development Fund (ERDF). -->
 
 <Config>
-	<FolderDataset>Wine</FolderDataset>
-	<Features>13</Features>
-	<Executions>2</Executions>
-	<Individuals>256</Individuals>
-	<GenerationsConvergence>5</GenerationsConvergence>
-	<MaximumGenerations>1000</MaximumGenerations>
-	<SubPopulations>2</SubPopulations>
-	<Migrations>0</Migrations>
-	<EvaluationVersion>5</EvaluationVersion>
-	<FitnessEvolution>0</FitnessEvolution>
-	<PercentageFS>0.05</PercentageFS>
-	<AccuracyConvergence>0.05</AccuracyConvergence>
-	<SDConvergence>0.0001</SDConvergence>
-	<K>-1</K>
-	<ExperimentName>testJCR</ExperimentName>
-	<CrossoverProbability>0.8</CrossoverProbability>
-	<MutationProbability>0.00028</MutationProbability>
-	<Grain>0.2</Grain>
-	<Period>10</Period>
-	<DecisionFeatures>19</DecisionFeatures>
-	<ProjectPath>/home/goloj/vegetto</ProjectPath>
+    <FolderDataset>Wine</FolderDataset>
+    <Features>13</Features>
+    <Executions>1</Executions>
+    <Individuals>48</Individuals>
+    <GenerationsConvergence>5</GenerationsConvergence>
+    <MaximumGenerations>1000</MaximumGenerations>
+    <SubPopulations>1</SubPopulations>
+    <Migrations>0</Migrations>
+    <EvaluationVersion>2</EvaluationVersion>
+    <FitnessEvolution>0</FitnessEvolution>
+    <PercentageFS>0.05</PercentageFS>
+    <AccuracyConvergence>0.05</AccuracyConvergence>
+    <SDConvergence>0.1</SDConvergence>
+    <K>-1</K>
+    <ExperimentName>testJCR</ExperimentName>
+    <CrossoverProbability>0.8</CrossoverProbability>
+    <MutationProbability>0.00028</MutationProbability>
+    <Grain>0.2</Grain>
+    <Period>10</Period>
+    <DecisionFeatures>19</DecisionFeatures>
+    <ProjectPath>/home/goloj/vegetto</ProjectPath>
 </Config>
