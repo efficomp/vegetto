@@ -1,0 +1,665 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>wrapper &mdash; vegetto</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/efficomp_logo1.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> vegetto
+          
+
+          
+            
+            <img src="../_static/efficomp_logo1.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../config.html"> Config module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../main.html"> Main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../knn.html"> KNN module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../database_functions.html"> Database module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../wrapper.html"> Wrapper module</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">vegetto</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>wrapper</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for wrapper</h1><div class="highlight"><pre>
+<span></span><span class="c1"># This file is part of Vegetto.</span>
+
+<span class="c1"># Vegetto is free software: you can redistribute it and/or modify it under the</span>
+<span class="c1"># terms of the GNU General Public License as published by the Free Software</span>
+<span class="c1"># Foundation, either version 3 of the License, or (at your option) any later</span>
+<span class="c1"># version.</span>
+
+<span class="c1"># Vegetto is distributed in the hope that it will be useful, but WITHOUT ANY</span>
+<span class="c1"># WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR</span>
+<span class="c1"># A PARTICULAR PURPOSE. See the GNU General Public License for more details.</span>
+
+<span class="c1"># You should have received a copy of the GNU General Public License along with</span>
+<span class="c1"># Vegetto. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="c1"># This work was supported by project PGC2018-098813-B-C31 (Spanish &quot;Ministerio</span>
+<span class="c1"># de Ciencia, Innovación y Universidades&quot;), and by the European Regional</span>
+<span class="c1"># Development Fund (ERDF).</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">gc</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+
+<span class="kn">from</span> <span class="nn">deap</span> <span class="k">import</span> <span class="n">base</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="k">import</span> <span class="n">creator</span>
+<span class="kn">from</span> <span class="nn">deap</span> <span class="k">import</span> <span class="n">tools</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">cohen_kappa_score</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">statistics</span> <span class="k">as</span> <span class="nn">st</span>
+
+<span class="kn">from</span> <span class="nn">knn</span> <span class="k">import</span> <span class="n">Knn</span>
+<span class="kn">from</span> <span class="nn">config</span> <span class="k">import</span> <span class="n">Config</span>
+
+<span class="c1"># from knn_library import *</span>
+
+<span class="n">toolbox</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">Toolbox</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="fill_chromosome"><a class="viewcode-back" href="../wrapper.html#wrapper.fill_chromosome">[docs]</a><span class="k">def</span> <span class="nf">fill_chromosome</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fill the chromosome with random features</span>
+
+<span class="sd">    :param p: Probability of each feature being selected</span>
+<span class="sd">    :type float:  :py:class:`float`</span>
+
+<span class="sd">    :param features: Number of features of the dataset</span>
+<span class="sd">    :type int:  :py:class:`int`</span>
+
+<span class="sd">    :return Array with selected features</span>
+<span class="sd">    :rtype: :py:class:`numpy.array`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">aux_features</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">features</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">p</span><span class="p">:</span>
+            <span class="n">aux_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">aux_features</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="random_feature"><a class="viewcode-back" href="../wrapper.html#wrapper.random_feature">[docs]</a><span class="k">def</span> <span class="nf">random_feature</span><span class="p">(</span><span class="n">features</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generation of an array with a one randome feature</span>
+
+<span class="sd">    :param features: Number of features of the dataset</span>
+<span class="sd">    :type int:  :py:class:`int`</span>
+
+<span class="sd">    :return Array with one selected feature</span>
+<span class="sd">    :rtype: :py:class:`numpy.array`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">features</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)])</span></div>
+
+
+<div class="viewcode-block" id="recombination_and_mutation"><a class="viewcode-back" href="../wrapper.html#wrapper.recombination_and_mutation">[docs]</a><span class="k">def</span> <span class="nf">recombination_and_mutation</span><span class="p">(</span><span class="n">pool</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Recombination of the pool&#39;s individuals</span>
+
+<span class="sd">    :param pool: Pool of individuals</span>
+
+<span class="sd">    :param config: Config object where all the hyperparameter values are loaded</span>
+<span class="sd">    :type Config: :py:mod:`config`</span>
+
+<span class="sd">    :return Offspring</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">offspring</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">parent1</span><span class="p">,</span> <span class="n">parent2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pool</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span> <span class="n">pool</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">config</span><span class="o">.</span><span class="n">pc</span><span class="p">:</span>
+            <span class="n">common</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">parent1</span><span class="p">,</span> <span class="n">parent2</span><span class="p">)</span>
+
+            <span class="n">uncommon_parent_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">parent1</span><span class="p">,</span> <span class="n">common</span><span class="p">)</span>
+            <span class="n">uncommon_parent_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">parent2</span><span class="p">,</span> <span class="n">common</span><span class="p">)</span>
+
+            <span class="n">random_array_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">uncommon_parent_1</span><span class="p">))</span>
+            <span class="n">random_array_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">uncommon_parent_2</span><span class="p">))</span>
+
+            <span class="n">uniform_parent_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">common</span><span class="p">,</span> <span class="n">uncommon_parent_1</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">random_array_1</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)[</span><span class="mi">1</span><span class="p">]],</span>
+                                               <span class="n">uncommon_parent_2</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">random_array_2</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)[</span><span class="mi">1</span><span class="p">]]))</span>
+            <span class="n">uniform_parent_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">common</span><span class="p">,</span> <span class="n">uncommon_parent_1</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">random_array_1</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)[</span><span class="mi">1</span><span class="p">]],</span>
+                                               <span class="n">uncommon_parent_2</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">random_array_2</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">)[</span><span class="mi">1</span><span class="p">]]))</span>
+
+            <span class="n">pre_child_1</span> <span class="o">=</span> <span class="n">mutate</span><span class="p">(</span><span class="n">uniform_parent_1</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">pm</span><span class="p">)</span>
+            <span class="n">pre_child_2</span> <span class="o">=</span> <span class="n">mutate</span><span class="p">(</span><span class="n">uniform_parent_2</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">pm</span><span class="p">)</span>
+
+            <span class="n">offspring</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">creator</span><span class="o">.</span><span class="n">Individual</span><span class="p">(</span><span class="n">pre_child_1</span><span class="p">))</span>
+            <span class="n">offspring</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">creator</span><span class="o">.</span><span class="n">Individual</span><span class="p">(</span><span class="n">pre_child_2</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parent_array_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">parent1</span><span class="p">)</span>
+            <span class="n">parent_array_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">parent2</span><span class="p">)</span>
+            <span class="n">individual_mutated_1</span> <span class="o">=</span> <span class="n">mutate</span><span class="p">(</span><span class="n">parent_array_1</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">pm</span><span class="p">)</span>
+            <span class="n">individual_mutated_2</span> <span class="o">=</span> <span class="n">mutate</span><span class="p">(</span><span class="n">parent_array_2</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">pm</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">individual_mutated_1</span><span class="p">,</span> <span class="n">parent_array_1</span><span class="p">):</span>
+                <span class="n">offspring</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">creator</span><span class="o">.</span><span class="n">Individual</span><span class="p">(</span><span class="n">individual_mutated_1</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">individual_mutated_2</span><span class="p">,</span> <span class="n">parent_array_2</span><span class="p">):</span>
+                <span class="n">offspring</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">creator</span><span class="o">.</span><span class="n">Individual</span><span class="p">(</span><span class="n">individual_mutated_2</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">offspring</span></div>
+
+
+<div class="viewcode-block" id="mutate"><a class="viewcode-back" href="../wrapper.html#wrapper.mutate">[docs]</a><span class="k">def</span> <span class="nf">mutate</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pm</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mutate to an individual with integer representation</span>
+
+<span class="sd">    :param individual: Individual (potential solution)</span>
+
+<span class="sd">    :param features: Number of features of the dataset</span>
+<span class="sd">    :type int:  :py:class:`int`</span>
+
+<span class="sd">    :param p: Probability of applying mutation</span>
+<span class="sd">    :type float:  :py:class:`float`</span>
+
+<span class="sd">    :return Individual mutated</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">all_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+    <span class="n">not_selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">all_features</span><span class="p">,</span> <span class="n">individual</span><span class="p">)</span>
+
+    <span class="n">to_be_kept</span> <span class="o">=</span> <span class="n">individual</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">individual</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">pm</span><span class="p">]</span>
+
+    <span class="n">to_be_added</span> <span class="o">=</span> <span class="n">not_selected</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">not_selected</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">pm</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">to_be_kept</span><span class="p">,</span> <span class="n">to_be_added</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="evaluate_knn_python"><a class="viewcode-back" href="../wrapper.html#wrapper.evaluate_knn_python">[docs]</a><span class="k">def</span> <span class="nf">evaluate_knn_python</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">knn</span><span class="p">:</span> <span class="n">Knn</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Evaluation of an individual by using the Scikit-learn k-NN</span>
+
+<span class="sd">    :param individual: Individual (potential solution)</span>
+
+<span class="sd">    :param knn: knn object</span>
+<span class="sd">    :type knn:  :py:class:`Knn`</span>
+
+<span class="sd">    :param p: Probability of applying mutation</span>
+<span class="sd">    :type Knn:  :py:mod:`Knn`</span>
+
+<span class="sd">    :return Individual evaluted (fitness assignment)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">knn</span><span class="o">.</span><span class="n">calculate_kappa_coefficiente_validation</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
+    <span class="n">individual</span><span class="o">.</span><span class="n">fitness</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">knn</span><span class="o">.</span><span class="n">accuracy_validation</span><span class="p">,</span> <span class="n">knn</span><span class="o">.</span><span class="n">number_of_selected_features</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">individual</span></div>
+
+
+<div class="viewcode-block" id="migration"><a class="viewcode-back" href="../wrapper.html#wrapper.migration">[docs]</a><span class="k">def</span> <span class="nf">migration</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">subpops</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sub_population_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Migration between different subpopulations: every subpopulation gives the half of its</span>
+<span class="sd">    Pareto front to the next subpopulation following a ring topology.</span>
+
+<span class="sd">    :param population: Entire population</span>
+
+<span class="sd">    :param subpops: Number of subpopulations</span>
+<span class="sd">    :type int:  :py:class:`int`</span>
+
+<span class="sd">    :param sub_population_size: Number of individuals of each subpopulation</span>
+<span class="sd">    :type int:  :py:class:`int`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">sub_pop</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">subpops</span><span class="p">):</span>
+        <span class="n">pareto_front</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">sortNondominated</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">],</span> <span class="n">sub_population_size</span><span class="p">,</span> <span class="n">first_front_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pareto_front</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">dest_sub_pop</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">sub_pop</span> <span class="o">==</span> <span class="p">(</span><span class="n">subpops</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="n">sub_pop</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">population</span><span class="p">[</span><span class="n">dest_sub_pop</span><span class="p">]</span> <span class="o">+=</span> <span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pareto_front</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="evaluation"><a class="viewcode-back" href="../wrapper.html#wrapper.evaluation">[docs]</a><span class="k">def</span> <span class="nf">evaluation</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">knn</span><span class="p">:</span> <span class="n">Knn</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to choose between the different k-NN implementations</span>
+
+<span class="sd">    :param population: Entire population</span>
+
+<span class="sd">    :param knn: knn object</span>
+<span class="sd">    :type knn:  :py:class:`Knn`</span>
+
+<span class="sd">    :param config: Config object where all the hyperparameter values are loaded</span>
+<span class="sd">    :type Config: :py:mod:`config`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">population</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">population</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">toolbox</span><span class="o">.</span><span class="n">population_for_empty_individual</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">population</span> <span class="o">=</span> <span class="p">[</span><span class="n">toolbox</span><span class="o">.</span><span class="n">evaluate_knn_python</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">knn</span><span class="p">)</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">population</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pop_for_library</span> <span class="o">=</span> <span class="n">Population</span><span class="p">([</span><span class="n">Individual</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="n">ind</span><span class="o">.</span><span class="n">fitness</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">population</span><span class="p">])</span>
+        <span class="n">config_for_library</span> <span class="o">=</span> <span class="n">Configuration</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">sub_populations</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation_version</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">k</span><span class="p">,</span>
+                                           <span class="n">config</span><span class="o">.</span><span class="n">project_path</span> <span class="o">+</span> <span class="s2">&quot;/db/aux/data_to_c.npy&quot;</span><span class="p">,</span>
+                                           <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">knn</span><span class="o">.</span><span class="n">labels_train</span><span class="p">)),</span> <span class="n">config</span><span class="o">.</span><span class="n">decision_features</span><span class="p">)</span>
+
+        <span class="n">fitness</span> <span class="o">=</span> <span class="n">pop_for_library</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">config_for_library</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">population</span><span class="p">)):</span>
+            <span class="n">population</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">fitness</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">cohen_kappa_score</span><span class="p">(</span><span class="n">fitness</span><span class="p">[</span><span class="n">index</span> <span class="o">*</span> <span class="mi">2</span><span class="p">],</span> <span class="n">fitness</span><span class="p">[(</span><span class="n">index</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span>
+                                                <span class="nb">len</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">index</span><span class="p">])]</span></div>
+
+
+<div class="viewcode-block" id="genetic_algorithm"><a class="viewcode-back" href="../wrapper.html#wrapper.genetic_algorithm">[docs]</a><span class="k">def</span> <span class="nf">genetic_algorithm</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">knn</span><span class="p">:</span> <span class="n">Knn</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span> <span class="n">sub_pop</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">q_in</span><span class="p">,</span> <span class="n">q_out</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">data_queue</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implementation of the NSGA-II steps</span>
+
+<span class="sd">    :param population: Entire population</span>
+
+<span class="sd">    :param knn: knn object</span>
+<span class="sd">    :type knn:  :py:class:`Knn`</span>
+
+<span class="sd">    :param config: Config object where all the hyperparameter values are loaded</span>
+<span class="sd">    :type Config: :py:mod:`config`</span>
+
+<span class="sd">    :param sub_pop: subpopulation index</span>
+<span class="sd">    :type int:  :py:class:`int`</span>
+
+<span class="sd">    :param q_in: queue to put migrants to be send on to next subpopulation</span>
+<span class="sd">    :type multiprocessing.Queue: :py:mod:`Queue`</span>
+
+<span class="sd">    :param q_put: queue to receive migrants</span>
+<span class="sd">    :type multiprocessing.Queue: :py:mod:`Queue`</span>
+
+<span class="sd">    :param q: queue to send the entire population at the end of the wrapper execution</span>
+<span class="sd">    :type multiprocessing.Queue: :py:mod:`Queue`</span>
+
+<span class="sd">    :param data_Qqeue: queue to send relevant information about wrapper execution</span>
+<span class="sd">    :type multiprocessing.Queue: :py:mod:`Queue`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">tr</span><span class="p">,</span> <span class="n">te</span><span class="p">,</span> <span class="n">ts</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">gen</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="n">finish</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">tt</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+    <span class="n">evaluation</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">],</span> <span class="n">knn</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+    <span class="n">te</span> <span class="o">+=</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tt</span><span class="p">)</span>
+
+    <span class="n">tt</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+    <span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">]</span> <span class="o">=</span> <span class="n">toolbox</span><span class="o">.</span><span class="n">selectNSGA2</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">]))</span>
+    <span class="n">ts</span> <span class="o">+=</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tt</span><span class="p">)</span>
+    <span class="n">mean_accuracy_convergence</span><span class="p">,</span> <span class="n">sd_convergence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+    <span class="n">accuracy_evolution</span><span class="p">,</span> <span class="n">features_evolution</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+    <span class="n">number_of_evaluations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">])</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">finish</span><span class="p">:</span>
+        <span class="c1"># -------- Starting the evaluation process --------</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">q_out</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+            <span class="n">pareto_to_pop</span> <span class="o">=</span> <span class="n">q_out</span><span class="o">.</span><span class="n">get_nowait</span><span class="p">()</span>
+            <span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pareto_to_pop</span>
+            <span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">]</span> <span class="o">=</span> <span class="n">toolbox</span><span class="o">.</span><span class="n">selectNSGA2</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">individuals</span><span class="p">)</span>
+
+        <span class="c1"># -------- Creation of the pool --------</span>
+        <span class="n">tt</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="n">pool</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">selTournamentDCD</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">individuals</span><span class="p">)</span>
+        <span class="n">offspring</span> <span class="o">=</span> <span class="n">recombination_and_mutation</span><span class="p">(</span><span class="n">pool</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+        <span class="n">tr</span> <span class="o">+=</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tt</span><span class="p">)</span>
+
+        <span class="c1"># ---------------------------------------------- EVALUATION -----------------------------------------------</span>
+        <span class="n">tt</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="n">evaluation</span><span class="p">(</span><span class="n">offspring</span><span class="p">,</span> <span class="n">knn</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+        <span class="n">te</span> <span class="o">+=</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tt</span><span class="p">)</span>
+        <span class="n">number_of_evaluations</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">offspring</span><span class="p">)</span>
+
+        <span class="c1"># ----------------------------------------------- SELECTION -----------------------------------------------</span>
+        <span class="n">tt</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">]</span> <span class="o">=</span> <span class="n">toolbox</span><span class="o">.</span><span class="n">selectNSGA2</span><span class="p">(</span><span class="n">offspring</span> <span class="o">+</span> <span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">individuals</span><span class="p">)</span>
+        <span class="n">ts</span> <span class="o">+=</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">tt</span><span class="p">)</span>
+
+        <span class="n">data_ac</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">fitness</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">]]</span>
+        <span class="n">mean_accuracy_convergence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mean_accuracy_convergence</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data_ac</span><span class="p">))</span>
+        <span class="n">sd_convergence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sd_convergence</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">pstdev</span><span class="p">(</span><span class="n">data_ac</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Max: &quot;</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">data_ac</span><span class="p">),</span> <span class="s2">&quot;Mean: &quot;</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data_ac</span><span class="p">),</span> <span class="s2">&quot; SD: &quot;</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">pstdev</span><span class="p">(</span><span class="n">data_ac</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">fitness_evolution</span><span class="p">:</span>
+            <span class="n">data_f</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">fitness</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">]]</span>
+            <span class="n">accuracy_evolution</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accuracy_evolution</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data_ac</span><span class="p">))</span>
+            <span class="n">features_evolution</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features_evolution</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data_f</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;FEATURES Max: &quot;</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">data_f</span><span class="p">),</span> <span class="s2">&quot;Mean: &quot;</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data_f</span><span class="p">),</span> <span class="s2">&quot; SD: &quot;</span><span class="p">,</span> <span class="n">st</span><span class="o">.</span><span class="n">pstdev</span><span class="p">(</span><span class="n">data_f</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">gen</span> <span class="o">&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">max_generations</span><span class="p">:</span>
+            <span class="n">finish</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">break</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">te</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+        <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+        <span class="n">gen</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># ------------------------------------------------- MIGRATION -------------------------------------------------</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">sub_populations</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">gen</span> <span class="o">%</span> <span class="n">config</span><span class="o">.</span><span class="n">period</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">pareto_front</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">sortNondominated</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">individuals</span><span class="p">,</span> <span class="n">first_front_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">migration_probability</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pareto_front</span><span class="p">))</span>
+            <span class="n">individuals_to_migrate</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">migration_probability</span> <span class="o">&lt;</span> <span class="n">config</span><span class="o">.</span><span class="n">grain</span><span class="p">)[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">individuals_to_migrate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pareto_front</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">individuals_to_migrate</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">individuals_to_migrate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pareto_front</span><span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pareto_front</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)])</span>
+            <span class="n">q_in</span><span class="o">.</span><span class="n">put_nowait</span><span class="p">(</span><span class="n">individuals_to_migrate</span><span class="p">)</span>
+            <span class="n">m</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">migrations</span><span class="p">:</span>
+                <span class="n">finish</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">gen</span> <span class="o">%</span> <span class="n">config</span><span class="o">.</span><span class="n">generations_convergence</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">accuracy_convergence</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">sd_convergence</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">finish</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">mean_accuracy_convergence</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span>
+                    <span class="n">mean_accuracy_convergence</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="n">config</span><span class="o">.</span><span class="n">accuracy_convergence</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">sd_convergence</span> <span class="o">&gt;</span> <span class="n">config</span><span class="o">.</span><span class="n">sd_convergence</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">finish</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mean_accuracy_convergence</span><span class="p">,</span> <span class="n">sd_convergence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+
+    <span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="n">sub_pop</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">fitness_evolution</span><span class="p">:</span>
+        <span class="n">data_queue</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">number_of_evaluations</span><span class="p">,</span> <span class="n">gen</span><span class="p">,</span> <span class="n">te</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">accuracy_evolution</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">features_evolution</span><span class="p">)])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data_queue</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">number_of_evaluations</span><span class="p">,</span> <span class="n">gen</span><span class="p">,</span> <span class="n">te</span><span class="p">,</span> <span class="n">ts</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="feature_selection"><a class="viewcode-back" href="../wrapper.html#wrapper.feature_selection">[docs]</a><span class="k">def</span> <span class="nf">feature_selection</span><span class="p">(</span><span class="n">knn</span><span class="p">:</span> <span class="n">Knn</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main function to perform the feature selection</span>
+
+<span class="sd">    :param knn: knn object</span>
+<span class="sd">    :type knn:  :py:class:`Knn`</span>
+
+<span class="sd">    :param config: Config object where all the hyperparameter values are loaded</span>
+<span class="sd">    :type Config: :py:mod:`config`</span>
+
+<span class="sd">    :return data_backup : Backup of the wrapper execution data</span>
+<span class="sd">    :rtype: :py:class:`dict`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># -----------------</span>
+    <span class="c1"># Defining genetics operators</span>
+    <span class="c1"># -----------------</span>
+
+    <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;Fitness&quot;</span><span class="p">,</span> <span class="n">base</span><span class="o">.</span><span class="n">Fitness</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">))</span>
+    <span class="n">creator</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;Individual&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">fitness</span><span class="o">=</span><span class="n">creator</span><span class="o">.</span><span class="n">Fitness</span><span class="p">)</span>
+
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;fill_chromosome&quot;</span><span class="p">,</span> <span class="n">fill_chromosome</span><span class="p">)</span>
+
+    <span class="n">chromosome_generator</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">fill_chromosome</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">percentage_fs</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+    <span class="n">empty_chromosome</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">random_feature</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;individual&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">initIterate</span><span class="p">,</span> <span class="n">creator</span><span class="o">.</span><span class="n">Individual</span><span class="p">,</span> <span class="n">chromosome_generator</span><span class="p">)</span>
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;fill_empty_individual&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">initIterate</span><span class="p">,</span> <span class="n">creator</span><span class="o">.</span><span class="n">Individual</span><span class="p">,</span> <span class="n">empty_chromosome</span><span class="p">)</span>
+
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;population&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">initRepeat</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">toolbox</span><span class="o">.</span><span class="n">individual</span><span class="p">)</span>
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;population_for_empty_individual&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">initRepeat</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">toolbox</span><span class="o">.</span><span class="n">fill_empty_individual</span><span class="p">)</span>
+
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;evaluate_knn_python&quot;</span><span class="p">,</span> <span class="n">evaluate_knn_python</span><span class="p">)</span>
+
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;crossover&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">cxUniform</span><span class="p">,</span> <span class="n">indpb</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;mutate&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">mutFlipBit</span><span class="p">,</span> <span class="n">indpb</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;selectNSGA2&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">selNSGA2</span><span class="p">)</span>
+    <span class="n">toolbox</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;selectTournament&quot;</span><span class="p">,</span> <span class="n">tools</span><span class="o">.</span><span class="n">selTournament</span><span class="p">,</span> <span class="n">tournsize</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># -----------------</span>
+    <span class="c1"># Genetic Algorithm</span>
+    <span class="c1"># -----------------</span>
+
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">time</span><span class="p">())</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">()))</span>
+
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation_version</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">data_to_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">knn</span><span class="o">.</span><span class="n">data_train</span><span class="p">,</span> <span class="n">knn</span><span class="o">.</span><span class="n">labels_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">knn</span><span class="o">.</span><span class="n">labels_train</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span>
+                              <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">project_path</span> <span class="o">+</span> <span class="s2">&quot;/db/aux/data_to_c&quot;</span><span class="p">,</span> <span class="n">data_to_c</span><span class="p">)</span>
+
+    <span class="n">pop</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">sub_populations</span><span class="p">):</span>
+        <span class="n">pop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">toolbox</span><span class="o">.</span><span class="n">population</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">individuals</span><span class="p">))</span>
+
+    <span class="c1"># ---------------------------------------- QUEUES AND PROCESSES CREATION ------------------------------------------</span>
+
+    <span class="n">processes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">final_pop</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">queues</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">gen_and_eval</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">sub_populations</span><span class="p">):</span>
+        <span class="n">queues</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mp</span><span class="o">.</span><span class="n">Queue</span><span class="p">())</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+    <span class="n">data_queue</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">sub_populations</span><span class="p">):</span>
+        <span class="n">id_out</span> <span class="o">=</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">sub_populations</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">processes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">mp</span><span class="o">.</span><span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">genetic_algorithm</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">pop</span><span class="p">,</span> <span class="n">knn</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">queues</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">queues</span><span class="p">[</span><span class="n">id_out</span><span class="p">],</span> <span class="n">q</span><span class="p">,</span> <span class="n">data_queue</span><span class="p">)))</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">processes</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">sub_populations</span><span class="p">):</span>
+        <span class="n">final_pop</span> <span class="o">+=</span> <span class="n">q</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">gen_and_eval</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_queue</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">processes</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+
+    <span class="n">final_pop</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">sortNondominated</span><span class="p">(</span><span class="n">final_pop</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">individuals</span><span class="p">,</span> <span class="n">first_front_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">data_backup</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;folder_dataset&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">folder_dataset</span><span class="p">,</span> <span class="s1">&#39;generations_convergence&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">generations_convergence</span><span class="p">,</span>
+                   <span class="s1">&#39;individuals&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">individuals</span><span class="p">,</span>
+                   <span class="s1">&#39;percentage_fs&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">percentage_fs</span><span class="p">,</span> <span class="s1">&#39;maximum_generations&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">max_generations</span><span class="p">,</span>
+                   <span class="s1">&#39;subpopulations&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">sub_populations</span><span class="p">,</span> <span class="s1">&#39;migrations&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">migrations</span><span class="p">,</span>
+                   <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">period</span><span class="p">,</span> <span class="s1">&#39;grain&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">grain</span><span class="p">,</span>
+                   <span class="s1">&#39;evaluation_version&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation_version</span><span class="p">,</span> <span class="s1">&#39;accuracy_convergence&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">accuracy_convergence</span><span class="p">,</span>
+                   <span class="s1">&#39;sd_convergence&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">sd_convergence</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="s1">&#39;experiment_name&#39;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">experiment_name</span><span class="p">}</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;************ PARETO FRONT ************&quot;</span><span class="p">)</span>
+    <span class="n">best_individuals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">final_pop</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="n">features_selected</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">]</span>
+    <span class="n">ac</span><span class="p">,</span> <span class="n">kappa</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">calculate_accuracy_test</span><span class="p">(</span><span class="n">final_pop</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">final_pop</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">test_kappa</span> <span class="o">=</span> <span class="n">kappa</span>
+    <span class="n">final_pop</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">test_accuaracy</span> <span class="o">=</span> <span class="n">ac</span>
+    <span class="n">final_pop</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">features</span>
+    <span class="n">best_individuals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">final_pop</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">final_pop</span><span class="p">)):</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">final_pop</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">features_selected</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">ac</span><span class="p">,</span> <span class="n">kappa</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">calculate_accuracy_test</span><span class="p">(</span><span class="n">final_pop</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy Test:&quot;</span><span class="p">,</span> <span class="n">ac</span><span class="p">,</span> <span class="s2">&quot;** Kappa coefficient:&quot;</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="s2">&quot;** fitness: &quot;</span><span class="p">,</span> <span class="n">final_pop</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">fitness</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+            <span class="n">final_pop</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">test_kappa</span> <span class="o">=</span> <span class="n">kappa</span>
+            <span class="n">final_pop</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">test_accuaracy</span> <span class="o">=</span> <span class="n">ac</span>
+            <span class="n">final_pop</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">features</span>
+            <span class="n">best_individuals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">final_pop</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">features_selected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluation_version</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">project_path</span> <span class="o">+</span> <span class="s2">&quot;/db/aux/data_to_c.npy&quot;</span><span class="p">)</span>
+
+    <span class="n">experiment</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pareto_front&#39;</span><span class="p">:</span> <span class="n">best_individuals</span><span class="p">,</span> <span class="s1">&#39;gens_and_evals&#39;</span><span class="p">:</span> <span class="n">gen_and_eval</span><span class="p">}</span>
+    <span class="n">data_backup</span><span class="p">[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">experiment</span>
+
+    <span class="k">return</span> <span class="n">data_backup</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, &lt;a href=&#34;https://atcproyectos.ugr.es/efficomp/&#34;&gt;EFFICOMP&lt;/a&gt;.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
